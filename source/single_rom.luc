@@ -1,0 +1,15 @@
+module single_rom (
+input ascii_code[2],
+  input  row[4],
+  input  col[3],
+  output row_of_pixels
+  ) {
+  
+  const CHAR = c{256h000000076cccccccccccc0000cc000018181818181818181f18181818181818,
+          256h0000000000fe0000fe0000fe0000000000000000ff000018187e181800000000
+  };
+  
+  always {
+    row_of_pixels = CHAR[c{ascii_code[1],~ascii_code[0] ,row, ~col}];
+  }
+}
