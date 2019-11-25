@@ -2,27 +2,27 @@
 <project name="VGA Module" board="Mojo" language="Lucid" version="2">
   <files>
     <component>cclk_detector.luc</component>
+    <src>vram.luc</src>
+    <src>serial_to_vga.luc</src>
     <component>simple_dual_ram.v</component>
-    <src>single_rom.luc</src>
+    <component>reg_interface.luc</component>
+    <src>vga_0816_rom.luc</src>
     <component>uart_rx.luc</component>
     <component>pwm.luc</component>
+    <src>game_overlay.luc</src>
     <component>counter.luc</component>
-    <src>vram.luc</src>
-    <src top="true">mojo_top.luc</src>
     <component>spi_slave.luc</component>
+    <src>vga_0816_rom_007f.luc</src>
     <src>vga.luc</src>
-    <src>vga_0816_rom_80ff.luc</src>
-    <src>vga640x480.v</src>
-    <src>vga_0816_rom.luc</src>
     <component>uart_tx.luc</component>
-    <src>oddr2.v</src>
     <component>sdram.luc</component>
     <component>simple_ram.v</component>
     <component>memory_bus.luc</component>
-    <src>vga_0816_rom_007f.luc</src>
+    <src>vga_0816_rom_80ff.luc</src>
     <component>reset_conditioner.luc</component>
+    <src>game_ram.luc</src>
     <component>edge_detector.luc</component>
-    <src>serial_to_vga.luc</src>
+    <src top="true">mojo_top.luc</src>
     <component>avr_interface.luc</component>
     <constraint>clk_divider.ucf</constraint>
     <constraint>VGA.ucf</constraint>

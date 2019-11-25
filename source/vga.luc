@@ -143,8 +143,8 @@ module vga(
     
     //single.ascii_code = char_col;
     //rom.ascii_code = char_col;      //try to assign the values inside the always block
-		rom.ascii_code = char_disp_ctr.q;    
-    //rom.ascii_code = vram.out_char;
+		//rom.ascii_code = char_disp_ctr.q;    
+    rom.ascii_code = vram.out_char;
     //rom.ascii_code = char_col;
     
    if (h_count.q < HA_STA || v_count.q >480){ 
@@ -157,10 +157,10 @@ module vga(
 		//b = 4x{1};
       
       r = 8x{rom.row_of_pixels};
-      g = 8x{0};
-      b = 8x{0};
-      //g = 8x{rom.row_of_pixels};
-      //b = 8x{rom.row_of_pixels};
+      //g = 8x{0};
+      //b = 8x{0};
+      g = 8x{rom.row_of_pixels};
+      b = 8x{rom.row_of_pixels};
       //r = 4x{single.row_of_pixels};
       //g = 4x{single.row_of_pixels};
       //b = 4x{single.row_of_pixels};

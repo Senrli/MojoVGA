@@ -43,24 +43,25 @@ module mojo_top (
     reset_conditioner reset_cond;
     .rst(rst){
       avr_interface avr;
+      reg_interface register;
     }
   }
   
 
-  serial_to_vga serial_print(
-    .clk(clkgen.clk_50),
-    .rst(rst),
-    .new_rx(avr.new_rx_data),
-    .rx_data(avr.rx_data),
-    .tx_busy(avr.tx_busy)
-    );
+  //serial_to_vga serial_print(
+  //  .clk(clkgen.clk_50),
+  //  .rst(rst),
+  //  .new_rx(avr.new_rx_data),
+  //  .rx_data(avr.rx_data),
+  //  .tx_busy(avr.tx_busy)
+  //  );
   
     vga vga (
       .rst(rst),
-      .clk(clkgen.clk_25),
-      .wr_en(serial_print.out_vram_write_en),
-      .wr_addr(serial_print.out_vram_addr),
-      .wr_data(serial_print.out_vram_data)      
+      .clk(clkgen.clk_25)
+      //.wr_en(serial_print.out_vram_write_en),
+      //.wr_addr(serial_print.out_vram_addr),
+      //.wr_data(serial_print.out_vram_data)      
     );
   
 
@@ -88,10 +89,19 @@ module mojo_top (
     avr_rx = avr.tx;
     
     // serial port
-    avr.tx_data = serial_print.tx_data;  // don't care
-    avr.new_tx_data = serial_print.new_tx; // no data
+    //avr.tx_data = serial_print.tx_data;  // don't care
+    //avr.new_tx_data = serial_print.new_tx; // no data
     
 
+    register.rx_data = avr.rx_data;
+    register.new_rx_data = avr.new_rx_data;
+    avr.tx_data = register.tx_data;
+    avr.new_tx_data = register.new_tx_data;
+    register.tx_busy = avr.tx_busy;
+ 
+    register.regIn.drdy = 0;    // default to no data
+    register.regIn.data = 32bx; // don't care
+    
     
     //io_led = 3x{{8h00}};    // turn LEDs off
     //io_seg = 8hff;          // turn segments off
@@ -113,6 +123,24 @@ module mojo_top (
     //vga_r = 4x{sq_b};         // square b is red
     //vga_g = 4x{sq_a | sq_d};  // squares a and d are green
     //vga_b = 4x{sq_c};         // square c is blue
+    
+    if (register.regOut.new_cmd) {             // new command
+      if (register.regOut.write) {             // if write
+        vga.wr_en = 1;
+        vga.wr_addr = register.regOut.address;
+        vga.wr_data = register.regOut.data[7:0];  // write the LEDs
+      }else{
+        vga.wr_en = 0;
+        vga.wr_addr = 0;
+        vga.wr_data = 0;
+      }
+    } else {                                 // if read
+      vga.wr_en = 0;
+      vga.wr_addr = 0;
+      vga.wr_data = 0;
+    }
+    
+    
     
     vga_r =  vga.r;
     vga_g =  vga.g;
