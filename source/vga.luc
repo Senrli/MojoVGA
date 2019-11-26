@@ -109,14 +109,14 @@ module vga(
 
     if (1) {
 
-			if (h_count.q == LINE){  // end of line
+			if (h_count.q == LINE-1){  // end of line
 
 				h_count.d = 0;
 				v_count.d = v_count.q + 1;
 			}
 			else 
 				h_count.d = h_count.q + 1;			
-			if (v_count.q == SCREEN)  // end of screen
+			if (v_count.q == SCREEN-1)  // end of screen
 				v_count.d = 0;
 		}
     
@@ -135,7 +135,7 @@ module vga(
 		char_col = o_x/8;
 		
 		char_y = o_y- char_row*16;
-		char_x = o_x- char_col*8;
+		char_x = o_x- char_col*8 -1;
     
     scan_addr = char_row*80+char_col;
 		
@@ -147,7 +147,7 @@ module vga(
     rom.ascii_code = vram.out_char;
     //rom.ascii_code = char_col;
     
-   if (h_count.q < HA_STA || v_count.q >480){ 
+   if (h_count.q < HA_STA || v_count.q >=480){ 
 		r = 4x{0};
 		g = 4x{0};
 		b = 4x{0};

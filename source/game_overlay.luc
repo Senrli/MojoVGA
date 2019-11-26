@@ -11,9 +11,9 @@ module game_overlay (
   );
   
   always {
-    case(overlay_ctr.q){
-      0:
-        
-    }
+    //case(overlay_ctr.q){
+    //  0:
+        out = 0;
+    //}
   }
 }
